@@ -3,21 +3,19 @@ import java.util.*
 class Game (var dice : List<Die>){
     var throws=1
 
-
     fun start(){
         println("Game starts")
-        println("--------------------------------------------")
-        rollDices()
-        showUnlockedDices()
-        println("do you want to lock some of the dices?y or n")
+        rollDice()
+        showUnlockedDice()
+        println("do you want to lock some of the dices? y or n")
 
         while(throws <=3) {
-            lockDices()
             if (throws < 3) {
-                println("-------------------------------------------- \n" + "Next throw" + "\n--------------------------------------------")
-                rollDices()
+                lockDice()
+                println("Next throw")
+                rollDice()
+                showUnlockedDice()
                 println("do you want to lock some of the dices? y or n")
-                showUnlockedDices()
                 throws++
             } else if (throws == 3) {
                 println("you had 3 throws, no throws left")
@@ -26,19 +24,19 @@ class Game (var dice : List<Die>){
             }
         }
     }
-    private fun rollDices() =  dice.forEach(){it.rollDie()}
-    private fun lockDices() {
+    private fun rollDice() =  dice.forEach(){it.rollDie()}
+    private fun lockDice() {
         if (readLine()?.lowercase()== "y") {
             println("to choose a dice write its ID (example : 1,2,3 )")
             dice.forEach(){ it.unlockDie()}
             pickDice()
             println("Locked dices:")
-            showLockedDices()
+            showLockedDice()
         }
     }
-    private fun showUnlockedDices() = dice.forEach{ if(!it.isLocked){println(it.value)} }
+    private fun showUnlockedDice() = dice.forEach{ if(!it.isLocked){println(it.value)} }
 
-    private fun showLockedDices() = dice.forEach { if(it.isLocked){println(it.value)} }
+    private fun showLockedDice() = dice.forEach { if(it.isLocked){println(it.value)} }
 
     private fun showDiceValues() = dice.forEach{ println( it.value)}
 
@@ -60,7 +58,7 @@ class Game (var dice : List<Die>){
     private fun getFive(values : List<Int>) : Int = values.filter { it == 5 }.count()
     private fun getSix(values : List<Int>) : Int = values.filter { it == 6 }.count()
 
-    fun checkForCombinations(){
+    fun validateResult(){
         val dices = mutableListOf<Int>()
         dice.forEach{dices.add(it.value)}
         dices.sort()
